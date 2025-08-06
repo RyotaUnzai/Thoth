@@ -1,0 +1,14 @@
+[tool.ruff]
+select = [
+    "F",
+    "B",
+    "I",
+    "E",
+    "W"
+]
+ignore = []
+fixable = ["ALL"]
+exclude = [".ruff_cache"]
+line-length = 120
+indent-width = 4
+target-version = "py310"
