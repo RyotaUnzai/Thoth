@@ -30,9 +30,19 @@ for /D %%D in ("%PROJECT_ROOT%\bin\VSCode-win32-x64-*") do (
     )
 )
 
+
 if defined MAX_PATH (
+    if not exist "%MAX_PATH%\data" (
+        echo [INFO] "%MAX_PATH%\data" does not exist. creating...
+        mkdir "%MAX_PATH%\data"
+    ) else (
+        echo [INFO] "%TARGET_PATH%" already exists.
+    )
+    powershell -ExecutionPolicy Bypass -File "%PROJECT_ROOT%\bin\install_extensions.ps1"
+    copy %PROJECT_ROOT%\bin\settings.json "%MAX_PATH%\data\user-data\User\settings.json"
+
     echo Launching VSCode version %MAX_VERSION%...
-    "%MAX_PATH%\Code.exe"
+    "%MAX_PATH%\Code.exe" --new-window  %PROJECT_ROOT%.vscode\Thoth.code-workspace
 ) else (
     echo No VSCode installation found in bin folder.
 )
