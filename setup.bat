@@ -55,35 +55,11 @@ where pip
 python -c "import sys; print(sys.executable)"
 
 
-echo [UPGRADE] Upgrading pip...
-"%PROJECT_ROOT%.venv\Scripts\python.exe" -m pip install --upgrade pip
-IF ERRORLEVEL 1 (
-  echo [ERROR] pip upgrade failed.
-  goto :EOF
-)
-echo [DONE] pip upgraded successfully.
 
-echo [INSTALL] Installing PySide6...
-"%PROJECT_ROOT%.venv\Scripts\python.exe" -m pip install PySide6
-"%PROJECT_ROOT%.venv\Scripts\python.exe" -m pip install PySide6-stubs
+REM Install Python packages (pip, PySide6, ruff, mypy, pydantic)
+call "%PROJECT_ROOT%bin\install_python_packages.bat"
 IF ERRORLEVEL 1 (
-  echo [ERROR] PySide6 install failed.
+  echo [ERROR] install_python_packages.bat failed.
   goto :EOF
 )
-echo [DONE] PySide6 installed successfully.
-
-echo [INSTALL] Installing ruff...
-"%PROJECT_ROOT%.venv\Scripts\python.exe" -m pip install ruff
-IF ERRORLEVEL 1 (
-  echo [ERROR] ruff install failed.
-  goto :EOF
-)
-echo [DONE] ruff installed successfully.
-
-echo [INSTALL] Installing mypy...
-"%PROJECT_ROOT%.venv\Scripts\python.exe" -m pip install mypy
-IF ERRORLEVEL 1 (
-  echo [ERROR] mypy install failed.
-  goto :EOF
-)
-echo [DONE] mypy installed successfully.
+echo [DONE] Python packages installed successfully.

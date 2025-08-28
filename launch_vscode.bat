@@ -2,12 +2,35 @@
 SETLOCAL ENABLEDELAYEDEXPANSION
 
 SET PROJECT_ROOT=%~dp0
+SET BIN_DIR=%PROJECT_ROOT%bin\
 
 :: Set up Python environment
 SET PYENV=%PROJECT_ROOT%\.pyenv\pyenv-win
 SET PYENV_HOME=%PYENV%
 SET PYENV_ROOT=%PYENV%
 SET PATH=%PYENV%\shims;%PYENV%\bin;%PATH%
+
+SET NEED_INSTALL = 0
+SET WORKSPACE_VERSION_FILE=%BIN_DIR%\VERSION
+SET LOCAL_WORKSPACE_VERSION_FILE=%BIN_DIR%\LOCAL_VERSION
+
+if not exist "%LOCAL_WORKSPACE_VERSION_FILE%" (
+    SET NEED_INSTALL=1
+) else (
+    fc /b "%WORKSPACE_VERSION_FILE%" "%LOCAL_WORKSPACE_VERSION_FILE%" > nul
+    if errorlevel 1 (
+        SET NEED_INSTALL=1
+    )
+)
+
+
+if "%NEED_INSTALL%"=="1" (
+    echo [INFO] Installing/updating pip pacakges...
+    rem call "%PROJECT_ROOT%bin\install_python_packages.bat"
+    rem copy /Y "%WORKSPACE_VERSION_FILE%" "%LOCAL_WORKSPACE_VERSION_FILE%"
+)
+
+
 
 :: Determine the latest version
 SET MAX_VERSION=
